@@ -1,0 +1,19 @@
+{
+  "name": "Todo-App--Next--Redux--Express--Typescript-",
+  "version": "1.0.0",
+  "description": "ToDo application on Next + Redux and Express (Typescript)",
+  "main": "index.js",
+  "author": "nether0ne <yanstoyanov2012@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel"
+  },
+  "devDependencies": {
+    "turbo": "^1.3.1"
+  }
+}
