@@ -1,0 +1,9 @@
+{
+  "pipeline": {
+    "build": {},
+    "lint": {},
+    "dev": {
+      "cache": false
+    }
+  }
+}
