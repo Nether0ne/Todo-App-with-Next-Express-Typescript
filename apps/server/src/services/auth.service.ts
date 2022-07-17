@@ -1,9 +1,10 @@
 import bcrypt from "bcryptjs";
-import { RegisterInput } from "@models/register-input.model";
-import HttpException from "@models/http-exception.model";
-import prisma from "@prisma/prisma-client";
-import generateToken from "@utils/token.utils";
-import { User } from "@models/user.model";
+import { RegisterInput } from "@models/auth/register-input.model";
+import HttpException from "@models/misc/http-exception.model";
+import prisma from "@prisma/prisma-instance";
+import { generateToken, getPayload } from "@utils/token.utils";
+import { User } from "@prisma/client";
+import { Request } from "express";
 
 const checkIfUserExists = async (email: string, username: string) => {
   const userWithEmail = await prisma.user.findUnique({
@@ -50,8 +51,10 @@ export const createUser = async (input: RegisterInput) => {
       password: hashedPassword,
     },
     select: {
+      id: true,
       email: true,
       username: true,
+      createdAt: true,
     },
   });
 
@@ -78,9 +81,11 @@ export const login = async (userPayload: Partial<User>) => {
       email,
     },
     select: {
+      id: true,
       email: true,
       username: true,
       password: true,
+      createdAt: true,
     },
   });
 
@@ -89,8 +94,10 @@ export const login = async (userPayload: Partial<User>) => {
 
     if (match) {
       return {
+        id: user.id,
         email: user.email,
         username: user.username,
+        createdAt: user.createdAt,
         token: generateToken(user),
       };
     }
@@ -110,18 +117,21 @@ export const getCurrentUser = async (username: string) => {
     });
   }
 
-  const user = (await prisma.user.findUnique({
+  const user = await prisma.user.findUnique({
     where: {
       username,
     },
     select: {
+      id: true,
       email: true,
       username: true,
+      createdAt: true,
     },
-  })) as User;
+  });
 
-  return {
-    ...user,
-    token: generateToken(user),
-  };
+  return user;
+};
+
+export const getUserFromRequest = (req: Request): Partial<User> => {
+  return getPayload(req);
 };

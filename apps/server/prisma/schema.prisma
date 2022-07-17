@@ -21,7 +21,7 @@ model Todo {
   id          Int      @id @default(autoincrement())
   description String   @db.VarChar(256)
   color       String   @db.VarChar(7)
-  completed   Boolean
+  completed   Boolean  @default(false)
   createdById Int
   createdBy   User     @relation(fields: [createdById], references: [id])
   createdAt   DateTime @default(now())

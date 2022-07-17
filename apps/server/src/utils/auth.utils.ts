@@ -1,7 +1,7 @@
 import { Request } from "express";
 import { expressjwt, TokenGetter } from "express-jwt";
 
-const getTokenFromHeaders: TokenGetter = (
+export const getTokenFromHeaders: TokenGetter = (
   req: Request,
 ): string | Promise<string> | undefined => {
   if (
@@ -14,7 +14,7 @@ const getTokenFromHeaders: TokenGetter = (
   return undefined;
 };
 
-const auth = {
+export const auth = {
   required: expressjwt({
     secret: process.env.JWT_SECRET || "superSecret",
     getToken: getTokenFromHeaders,
@@ -27,5 +27,3 @@ const auth = {
     algorithms: ["HS256"],
   }),
 };
-
-export default auth;

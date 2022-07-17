@@ -3,7 +3,7 @@ import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import routes from "@routes/index";
-import HttpException from "@models/http-exception.model";
+import HttpException from "@models/misc/http-exception.model";
 
 const app = express();
 const port = process.env.PORT;
@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(routes);
 
-// Serves images
+// Serves static files
 app.use(express.static("public"));
 
 app.get("/", (_req: Request, res: Response) => {
