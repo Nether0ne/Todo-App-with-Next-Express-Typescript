@@ -14,13 +14,11 @@ export const createTodo = async (
 ) => {
   const { description, color } = input;
   if (!description) {
-    throw new HttpException(422, {
-      errors: { description: ["can't be blank"] },
-    });
+    throw new HttpException(422, "DESCRIPTION_REQUIRED");
   }
 
   if (!color) {
-    throw new HttpException(422, { errors: { color: ["can't be blank"] } });
+    throw new HttpException(422, "COLOR_REQUIRED");
   }
 
   const todo = await prisma.todo.create({
@@ -41,7 +39,7 @@ export const updateTodo = async (
   const { id, description, color } = editInput;
 
   if (id < 0) {
-    throw new HttpException(422, { errors: { id: ["is invalid"] } });
+    throw new HttpException(422, "ID_IS_INVALID");
   }
 
   const foundTodo = await prisma.todo.findFirst({
@@ -52,7 +50,7 @@ export const updateTodo = async (
   });
 
   if (!foundTodo) {
-    throw new HttpException(404, { errors: { id: ["was not found"] } });
+    throw new HttpException(404, "TODO_NOT_FOUND");
   }
 
   await prisma.todo.update({
@@ -67,6 +65,10 @@ export const updateTodo = async (
 };
 
 export const deleteTodo = async (deletedBy: Partial<User>, id: number) => {
+  if (id < 0) {
+    throw new HttpException(422, "ID_IS_INVALID");
+  }
+
   const foundTodo = await prisma.todo.findFirst({
     where: {
       id,
@@ -75,7 +77,7 @@ export const deleteTodo = async (deletedBy: Partial<User>, id: number) => {
   });
 
   if (!foundTodo) {
-    throw new HttpException(404, { errors: { id: ["was not found"] } });
+    throw new HttpException(404, "TODO_NOT_FOUND");
   }
 
   await prisma.todo.delete({ where: { id } });

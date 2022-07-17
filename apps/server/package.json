@@ -6,10 +6,13 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build": "yarn generate && tsc && tsc-alias",
-    "start": "tsc & node -r module-alias/register .",
+    "build": "yarn prisma:generate && tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
+    "start": "node .",
     "dev": "concurrently --kill-others \"tsc -w\" \"tsc-alias -w\" \"nodemon .\"",
-    "generate": "prisma generate"
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "lint:check": "npx eslint src/**/*.ts",
+    "lint:fix": "npx eslint --fix src/**/*.ts"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",

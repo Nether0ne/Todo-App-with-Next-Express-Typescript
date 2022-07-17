@@ -17,9 +17,7 @@ const checkIfUserExists = async (email: string, username: string) => {
   });
 
   if (userWithEmail || userWithUsername) {
-    throw new HttpException(422, {
-      errors: { [userWithEmail ? email : username]: "is already in use." },
-    });
+    throw new HttpException(422, `USER_ALREADY_EXISTS`);
   }
 };
 
@@ -29,15 +27,15 @@ export const createUser = async (input: RegisterInput) => {
   const password = input.password.trim();
 
   if (!email) {
-    throw new HttpException(422, { errors: { email: ["can't be blank"] } });
+    throw new HttpException(422, "EMAIL_REQUIRED");
   }
 
   if (!username) {
-    throw new HttpException(422, { errors: { username: ["can't be blank"] } });
+    throw new HttpException(422, "USERNAME_REQUIRED");
   }
 
   if (!password) {
-    throw new HttpException(422, { errors: { password: ["can't be blank"] } });
+    throw new HttpException(422, "PASSWORD_REQUIRED");
   }
 
   await checkIfUserExists(email, username);
@@ -69,11 +67,11 @@ export const login = async (userPayload: Partial<User>) => {
   const password = userPayload.password?.trim();
 
   if (!email) {
-    throw new HttpException(422, { errors: { email: ["can't be blank"] } });
+    throw new HttpException(422, "EMAIL_REQUIRED");
   }
 
   if (!password) {
-    throw new HttpException(422, { errors: { password: ["can't be blank"] } });
+    throw new HttpException(422, "PASSWORD_REQUIRED");
   }
 
   const user = await prisma.user.findUnique({
@@ -103,18 +101,12 @@ export const login = async (userPayload: Partial<User>) => {
     }
   }
 
-  throw new HttpException(403, {
-    errors: {
-      "email or password": ["is invalid"],
-    },
-  });
+  throw new HttpException(403, "INVALID_CREDENTIALS");
 };
 
 export const getCurrentUser = async (username: string) => {
   if (!username) {
-    throw new HttpException(422, {
-      errors: { username: ["was not provided"] },
-    });
+    throw new HttpException(422, "USERNAME_REQUIRED");
   }
 
   const user = await prisma.user.findUnique({
