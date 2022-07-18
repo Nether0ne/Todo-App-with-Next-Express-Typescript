@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import { RegisterInput } from "@models/auth/register-input.model";
 import HttpException from "@models/misc/http-exception.model";
-import prisma from "@prisma/prisma-instance";
+import prisma from "@myPrisma/prisma-instance";
 import { generateToken, getPayload } from "@utils/token.utils";
 import { User } from "@prisma/client";
 import { Request } from "express";

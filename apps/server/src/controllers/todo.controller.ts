@@ -35,6 +35,7 @@ router.get(
  * @auth required
  * @route {POST} /todo
  * @bodyParam todo TodoInput
+ * @returns todo Todo
  */
 router.post(
   "/todo",
@@ -43,8 +44,8 @@ router.post(
     try {
       const user = getUserFromRequest(req);
       const todoInput = req.body.todo;
-      await createTodo(user, todoInput);
-      res.status(200).send("OK");
+      const newTodo = await createTodo(user, todoInput);
+      res.status(200).json({ todo: newTodo });
     } catch (error) {
       next(error);
     }
@@ -56,6 +57,7 @@ router.post(
  * @auth required
  * @route {PUT} /todo
  * @bodyParam todo TodoEditInput
+ * @returns todo Todo
  */
 router.put(
   "/todo",
@@ -63,9 +65,9 @@ router.put(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const user = getUserFromRequest(req);
-      const updatedTodo = req.body.todo;
-      await updateTodo(user, updatedTodo);
-      res.status(200).send("OK");
+      const editInput = req.body.todo;
+      const updatedTodo = await updateTodo(user, editInput);
+      res.status(200).json({ todo: updatedTodo });
     } catch (error) {
       next(error);
     }
@@ -84,7 +86,7 @@ router.delete(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const user = getUserFromRequest(req);
-      const toDeleteTodoId = req.body.todo.id;
+      const toDeleteTodoId = req.body.todo;
       await deleteTodo(user, toDeleteTodoId);
       res.status(200).send("OK");
     } catch (error) {

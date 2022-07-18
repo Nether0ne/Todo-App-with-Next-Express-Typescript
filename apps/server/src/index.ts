@@ -1,4 +1,10 @@
-import "dotenv/config";
+import dotenv from "dotenv";
+dotenv.config({
+  path:
+    process.env.NODE_ENV === "production"
+      ? ".env"
+      : `.env.${process.env.NODE_ENV}`,
+});
 import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
@@ -29,16 +35,13 @@ app.use(
     _next: NextFunction,
   ) => {
     if (err && err.name === "UnauthorizedError") {
-      return res.status(401).json({
-        status: "error",
-        message: "missing authorization credentials",
-      });
+      return res.status(401).json({ error: "UNAUTHORIZED" });
     } else if (err && "errorCode" in err) {
-      res.status(err.errorCode).json(err.message);
+      res.status(err.errorCode).json({ error: err.message });
     } else if (err) {
-      res.status(500).json(err.message);
+      res.status(500).json({ error: err.message });
     }
   },
 );
 
-app.listen(port, () => console.log(`Running on port ${port}`));
+export default app.listen(port);

@@ -3,6 +3,7 @@
   "display": "Server",
   "compilerOptions": {
     "target": "ES6",
+    "types": ["node", "jest"],
     "lib": ["ES6"],
     "outDir": "dist",
     "module": "commonjs",
@@ -17,14 +18,16 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
+      "@/*": ["src/*"],
       "@controllers/*": ["src/controllers/*"],
       "@models/*": ["src/models/*"],
       "@routes/*": ["src/routes/*"],
       "@services/*": ["src/services/*"],
       "@utils/*": ["src/utils/*"],
-      "@prisma/*": ["prisma/*"]
+      "@myPrisma/*": ["prisma/*"],
+      "@mocks/*": ["tests/mocks/*"]
     }
   },
-  "include": ["./src/**/*"],
+  "include": ["./src/**/*", "./tests/**/*"],
   "exclude": ["node_modules"]
 }

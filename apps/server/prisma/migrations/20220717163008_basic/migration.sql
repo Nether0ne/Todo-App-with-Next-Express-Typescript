@@ -32,7 +32,7 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 ALTER TABLE "Todo" ADD CONSTRAINT "Todo_createdById_fkey" FOREIGN KEY ("createdById") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- Add test user
-INSERT INTO public."User" (id, username, email, password, "createdAt") VALUES (1, 'test', 'test@email.com', '$2a$10$GRnDF48FFiob7kpT2duswOaqUJXURiTbX6DAEiP11tAJ.Vt821YFu', '2022-07-17 16:30:56.264');
+INSERT INTO public."User" (username, email, password, "createdAt") VALUES ('test', 'test@email.com', '$2a$10$GRnDF48FFiob7kpT2duswOaqUJXURiTbX6DAEiP11tAJ.Vt821YFu', '2022-07-17 16:30:56.264');
 
 -- Add basic todo
-INSERT INTO public."Todo" (id, description, color, completed, "createdById", "createdAt", "updatedAt") VALUES (1, 'My first todo!', '#2461b5', false, 1, '2022-07-17 16:31:04.955', '2022-07-17 16:31:04.955');
+INSERT INTO public."Todo" (description, color, completed, "createdById", "createdAt", "updatedAt") VALUES ('My first todo!', '#2461b5', false, 1, '2022-07-17 16:31:04.955', '2022-07-17 16:31:04.955');
