@@ -49,7 +49,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Deploy Server
-        uses: akhileshns/heroku-deploy
+        uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: ${{ secrets.HEROKU_CLIENT_APP_NAME }}
@@ -57,7 +57,7 @@ jobs:
         env:
           HD_APP_BASE: "apps/server"
       - name: Deploy Client
-        uses: akhileshns/heroku-deploy
+        uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: ${{ secrets.HEROKU_SERVER_APP_NAME }}
