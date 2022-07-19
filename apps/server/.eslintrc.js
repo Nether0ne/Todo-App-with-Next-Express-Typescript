@@ -1,7 +1,7 @@
 /* eslint-disable */
 module.exports = {
   env: {
-    browser: true,
+    browser: false,
     es2021: true,
   },
   extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
@@ -15,12 +15,14 @@ module.exports = {
     "prettier/prettier": [
       1,
       {
-        trailingComma: "es6",
-        singleQuote: true,
+        trailingComma: "all",
+        singleQuote: false,
         semi: true,
+        endOfLine: "crlf",
       },
     ],
+    noUnusedVars: 0,
+    "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
     ...require("eslint-config-prettier").rules,
-    ...require("eslint-config-prettier/@typescript-eslint").rules,
   },
 };
