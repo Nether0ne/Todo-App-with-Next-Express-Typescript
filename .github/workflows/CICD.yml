@@ -1,7 +1,7 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: Project CI
+name: Continuous Integration Workflow
 
 on:
   push:
@@ -42,3 +42,17 @@ jobs:
       - run: npm run test
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+  deploy:
+    needs: ["build", "test"]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Add client remote origin
+        run: git remote add heroku-client https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/${{ secrets.HEROKU_CLIENT_APP_NAME }}.git
+      - name: Deploy client to Heroku
+        run: git push heroku-client `git subtree split --prefix apps/client main`:refs/heads/main --force
+      - name: Add server remote origin
+        run: git remote add heroku-backend https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/${{ secrets.HEROKU_SERVER_APP_NAME }}.git
+      - name: Deploy server to Heroku
+        run: git push heroku-server `git subtree split --prefix apps/server main`:refs/heads/main --force
