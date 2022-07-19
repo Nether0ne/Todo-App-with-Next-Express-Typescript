@@ -3,7 +3,6 @@ name: Client CD
 on:
   workflow_run:
     workflows: ["Project CI"]
-    branches: ["main"]
     paths:
       - "apps/client/**"
       - ".github/workflows/client.yml"
@@ -18,4 +17,4 @@ jobs:
       - name: Add client remote origin
         run: git remote add heroku-client https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/${{ secrets.HEROKU_CLIENT_APP_NAME }}.git
       - name: Deploy client to Heroku
-        run: git push heroku-client `git subtree split --prefix apps/client master`:refs/heads/master --force
+        run: git push heroku-client `git subtree split --prefix apps/client main`:refs/heads/main --force
