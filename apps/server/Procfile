@@ -1,3 +1,3 @@
-web: npm i
-web: npm build
-web: npm start
+web: cd apps/server npm i
+web: cd apps/server npm build
+web: cd apps/server npm start
