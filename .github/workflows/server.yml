@@ -3,9 +3,10 @@ name: Server CD
 on:
   workflow_run:
     workflows: ["Project CI"]
-    paths:
-      - "apps/server/**"
-      - ".github/workflows/server.yml"
+    # branches: ["main"]
+    # paths:
+    #   - "apps/server/**"
+    #   - ".github/workflows/server.yml"
     types:
       - completed
 

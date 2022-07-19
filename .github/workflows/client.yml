@@ -3,9 +3,10 @@ name: Client CD
 on:
   workflow_run:
     workflows: ["Project CI"]
-    paths:
-      - "apps/client/**"
-      - ".github/workflows/client.yml"
+    # branches: ["main"]
+    # paths:
+    #   - "apps/client/**"
+    #   - ".github/workflows/client.yml"
     types:
       - completed
 
