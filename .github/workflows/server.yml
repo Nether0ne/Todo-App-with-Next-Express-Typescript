@@ -1,43 +1,23 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
-
-name: Server CI/CD
+name: Server CD
 
 on:
   push:
     branches: ["main"]
+    paths:
+      - "apps/server/**"
+      - ".github/workflows/server.yml"
   pull_request:
     branches: ["main"]
+    paths:
+      - "apps/server/**"
+      - ".github/workflows/server.yml"
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [16.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: "npm"
-      - run: npm ci
-      - run: npm run build --if-present
-      - run: npm run test
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: akhileshns/heroku-deploy@v3.12.12
-        with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "nether-todo-server"
-          heroku_email: "yanstoyanov2012@gmail.com"
+      - name: Add server remote origin
+        run: git remote add heroku-backend https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/${{ secrets.HEROKU_SERVER_APP_NAME }}.git
+      - name: Deploy server to Heroku
+        run: git push heroku-server `git subtree split --prefix apps/server master`:refs/heads/master --force

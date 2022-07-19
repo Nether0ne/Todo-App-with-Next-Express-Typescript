@@ -1,0 +1,23 @@
+name: Client CD
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "apps/client/**"
+      - ".github/workflows/client.yml"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "apps/client/**"
+      - ".github/workflows/client.yml"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Add client remote origin
+        run: git remote add heroku-client https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/${{ secrets.HEROKU_CLIENT_APP_NAME }}.git
+      - name: Deploy client to Heroku
+        run: git push heroku-client `git subtree split --prefix apps/client master`:refs/heads/master --force
