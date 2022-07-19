@@ -48,13 +48,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Add client remote origin
-        run: git remote add heroku-client https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/${{ secrets.HEROKU_CLIENT_APP_NAME }}.git
-      - name: Fetch branch
-        run: git fetch main
-      - name: Deploy client to Heroku
-        run: git push heroku-client `git subtree split --prefix apps/client main`:refs/heads/main --force
-      - name: Add server remote origin
-        run: git remote add heroku-backend https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/${{ secrets.HEROKU_SERVER_APP_NAME }}.git
-      - name: Deploy server to Heroku
-        run: git push heroku-server `git subtree split --prefix apps/server main`:refs/heads/main --force
+      - name: Deploy Server
+        uses: akhileshns/heroku-deploy
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: ${{ secrets.HEROKU_CLIENT_APP_NAME }}
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
+        env:
+          HD_APP_BASE: "apps/server"
+      - name: Deploy Client
+        uses: akhileshns/heroku-deploy
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: ${{ secrets.HEROKU_SERVER_APP_NAME }}
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
+        env:
+          HD_APP_BASE: "apps/client"
