@@ -1,16 +1,14 @@
 name: Server CD
 
 on:
-  push:
+  workflow_run:
+    workflows: ["Project CI"]
     branches: ["main"]
     paths:
       - "apps/server/**"
       - ".github/workflows/server.yml"
-  pull_request:
-    branches: ["main"]
-    paths:
-      - "apps/server/**"
-      - ".github/workflows/server.yml"
+    types:
+      - completed
 
 jobs:
   deploy:
