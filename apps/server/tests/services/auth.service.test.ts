@@ -99,10 +99,17 @@ describe("AuthService", () => {
 
   describe("getCurrentUser", () => {
     test("should return current user", async () => {
-      const username = data.username;
+      const username = data.email;
       const user = await getCurrentUser(username);
 
       expect(user).toBeDefined();
+    });
+
+    test("should throw an error when the email is empty", async () => {
+      const email = "";
+
+      const error = "EMAIL_REQUIRED";
+      await expect(getCurrentUser(email)).rejects.toThrow(error);
     });
   });
 });

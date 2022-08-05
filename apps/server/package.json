@@ -15,6 +15,7 @@
     "prisma:generate": "npx prisma generate",
     "prisma:push": "npx prisma db push",
     "prisma:migrate": "npx prisma migrate dev",
+    "prisma:migrate:dev": "dotenv -e .env.dev npx prisma migrate dev",
     "lint:check": "npx eslint src/**/*.ts",
     "lint:fix": "npx eslint --fix src/**/*.ts"
   },

@@ -23,7 +23,7 @@ router.get(
     try {
       const user = getUserFromRequest(req);
       const todos = await getTodos(user);
-      res.status(200).json(todos);
+      res.status(200).json({ todos });
     } catch (error) {
       next(error);
     }
