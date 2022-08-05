@@ -65,7 +65,7 @@ describe("TodoController", () => {
         .get("/api/todos")
         .set("Authorization", `Bearer ${mockedUser.token}`);
       expect(res.statusCode).toEqual(200);
-      expect(res.body.length).toBeGreaterThan(0);
+      expect(res.body.todos.length).toBeGreaterThan(0);
     });
   });
 

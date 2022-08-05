@@ -1,6 +1,11 @@
 import { NextFunction, Request, Response, Router } from "express";
 import { auth } from "@utils/auth.utils";
-import { createUser, getCurrentUser, login } from "../services/auth.service";
+import {
+  createUser,
+  getCurrentUser,
+  getUserFromRequest,
+  login,
+} from "@services/auth.service";
 
 const router = Router();
 
@@ -53,7 +58,8 @@ router.get(
   auth.required,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const user = await getCurrentUser(req.body.user?.username as string);
+      const { email } = getUserFromRequest(req);
+      const user = await getCurrentUser(email);
       res.json({ user });
     } catch (error) {
       next(error);

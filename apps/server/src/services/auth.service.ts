@@ -92,11 +92,13 @@ export const login = async (userPayload: Partial<User>) => {
 
     if (match) {
       return {
-        id: user.id,
-        email: user.email,
-        username: user.username,
-        createdAt: user.createdAt,
-        token: generateToken(user),
+        ...user,
+        token: generateToken({
+          id: user.id,
+          email: user.email,
+          username: user.username,
+          createdAt: user.createdAt,
+        }),
       };
     }
   }
@@ -104,15 +106,13 @@ export const login = async (userPayload: Partial<User>) => {
   throw new HttpException(403, "INVALID_CREDENTIALS");
 };
 
-export const getCurrentUser = async (username: string) => {
-  if (!username) {
-    throw new HttpException(422, "USERNAME_REQUIRED");
+export const getCurrentUser = async (email: string | undefined) => {
+  if (!email) {
+    throw new HttpException(422, "EMAIL_REQUIRED");
   }
 
-  const user = await prisma.user.findUnique({
-    where: {
-      username,
-    },
+  const user = await prisma.user.findFirst({
+    where: { email },
     select: {
       id: true,
       email: true,

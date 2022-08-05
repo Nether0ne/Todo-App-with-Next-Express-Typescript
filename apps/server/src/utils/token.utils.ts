@@ -4,7 +4,9 @@ import jwt from "jsonwebtoken";
 import { getTokenFromHeaders } from "@utils/auth.utils";
 
 export const generateToken = (user: Partial<User>): string =>
-  jwt.sign(user, process.env.JWT_SECRET || "superSecret", { expiresIn: "30m" });
+  jwt.sign(user, process.env.JWT_SECRET || "superSecret", {
+    expiresIn: "300m",
+  });
 
 export const getPayload = (headers: Request): Partial<User> => {
   const token = getTokenFromHeaders(headers) as string;
