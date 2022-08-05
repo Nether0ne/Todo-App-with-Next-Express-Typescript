@@ -9,7 +9,6 @@ interface Props {
 }
 
 export const TodoWrapper: FC<Props> = ({ children, color, onClick, sx }) => {
-  const singleChild = !Array.isArray(children);
   return (
     <Paper
       item
@@ -17,10 +16,9 @@ export const TodoWrapper: FC<Props> = ({ children, color, onClick, sx }) => {
       onClick={onClick}
       sx={sx}
       xs={12}
-      sm={6}
+      sm={5}
       md={5}
-      lg={4}
-      xl={3}
+      lg={3}
       minHeight={230}
       border={`2px solid ${color}`}
       borderRadius={2}

@@ -12,7 +12,7 @@ export const MainLayout: FC<Props> = ({ children }) => {
     <>
       <Navigation />
       <Grid container justifyContent="center" alignItems="center">
-        <Grid component="main" item xs={12} md={10} lg={8}>
+        <Grid component="main" item xs={12} md={10} lg={9}>
           {children}
         </Grid>
         <Grid

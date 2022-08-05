@@ -26,7 +26,7 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       if (error) {
         res.statusMessage = error;
         if (error === "UNAUTHORIZED") {
-          res.status(401);
+          res.status(401).json({ message: error, status });
         } else {
           res.status(Number(status)).json({ message: error, status });
         }

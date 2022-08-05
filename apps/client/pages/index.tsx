@@ -63,9 +63,15 @@ const Home: NextPage<Props> = ({ todos }) => {
         <Grid
           container
           flexWrap={"wrap"}
+          justifyContent={{
+            xs: "center",
+            sm: "space-around",
+            md: "space-between",
+            lg: "space-evenly",
+          }}
           alignItems={"flex-start"}
           alignSelf={"center"}
-          gap={2}
+          gap={{ xs: 2, sm: 3, md: 4, lg: 5 }}
           px={2}
           pt={4}>
           {todoList.map((todo) => (
