@@ -11,14 +11,17 @@ const addTodo = async (todoToAdd: TodoAdd): Promise<Todo> => {
     return todo as Todo;
   } catch (e: unknown) {
     if (e instanceof AxiosError) {
-      const { error } = e.response?.data;
-
-      if (error === "DESCRIPTION_REQUIRED") {
-        throw new Error("Description is required");
-      } else if (error === "COLOR_REQUIRED") {
-        throw new Error("Color is required");
+      const response = e.response?.statusText;
+      if (response) {
+        if (response === "DESCRIPTION_REQUIRED") {
+          throw new Error("Description is required");
+        } else if (response === "COLOR_REQUIRED") {
+          throw new Error("Color is required");
+        } else {
+          throw new Error("Something went wrong");
+        }
       } else {
-        throw new Error("Something went wrong");
+        throw new Error("Unknown error has appeared");
       }
     } else {
       throw new Error("Internal Server Error");

@@ -27,14 +27,11 @@ export const LoginForm: FC = () => {
         resolve(await router.push("/"));
       } catch (e: unknown) {
         let errorMessage = "Something went wrong";
-
         if (e instanceof Error) {
-          const msg = e.message;
+          const { message } = e;
 
-          if (msg === "INVALID_CREDENTIALS") {
-            errorMessage = "Invalid email or password";
-          } else {
-            errorMessage = msg;
+          if (message) {
+            errorMessage = message;
           }
         }
 

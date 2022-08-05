@@ -39,15 +39,11 @@ export const RegisterForm: FC = () => {
         resolve(await router.push("/"));
       } catch (e: unknown) {
         let errorMessage = "Something went wrong";
-
         if (e instanceof Error) {
-          const msg = e.message;
+          const { message } = e;
 
-          if (msg === "USER_ALREADY_EXISTS") {
-            errorMessage =
-              "User with provided email or username already exists";
-          } else {
-            errorMessage = msg;
+          if (message) {
+            errorMessage = message;
           }
         }
 
