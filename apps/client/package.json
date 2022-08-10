@@ -20,7 +20,6 @@
     "@mui/material": "^5.9.1",
     "axios": "^0.27.2",
     "next": "12.2.2",
-    "node-fetch": "^3.2.9",
     "notistack": "^2.0.5",
     "react": "18.2.0",
     "react-aria": "^3.17.0",

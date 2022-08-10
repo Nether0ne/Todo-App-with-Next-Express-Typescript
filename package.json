@@ -1,7 +1,7 @@
 {
-  "name": "Todo-App--Next--Redux--Express--Typescript-",
+  "name": "Todo-App--Next--Express--Typescript-",
   "version": "1.0.0",
-  "description": "ToDo application on Next + Redux and Express (Typescript)",
+  "description": "Todo application on Next and Express (Typescript)",
   "main": "index.js",
   "author": "nether0ne <yanstoyanov2012@gmail.com>",
   "license": "MIT",
@@ -14,6 +14,10 @@
     "test": "turbo run test",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint"
+  },
+  "devDependencies": {
+    "lint-staged": "^13.0.3",
+    "simple-git-hooks": "^2.8.0"
   },
   "dependencies": {
     "turbo": "^1.1.5"
