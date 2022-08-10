@@ -1,5 +1,11 @@
 import { Todo, TodoEdit } from "@customTypes/Todo";
-import { Grid, IconButton, Tooltip, Typography } from "@mui/material";
+import {
+  CircularProgress,
+  Grid,
+  IconButton,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { FC, useState } from "react";
 import { TodoWrapper } from "@components/cards/Todo/Wrapper";
 import CheckIcon from "@mui/icons-material/Check";
@@ -20,6 +26,9 @@ interface Props {
 export const TodoCard: FC<Props> = ({ todo, onUpdate, onRemove }) => {
   const { enqueueSnackbar } = useSnackbar();
   const [isEditing, setIsEditing] = useState(false);
+  const [isRemoving, setIsRemoving] = useState(false);
+  const [isCompleting, setIsCompleting] = useState(false);
+
   const toggleEdit = () => setIsEditing(!isEditing);
   const { description, color, completed, createdAt } = todo;
 
@@ -68,15 +77,27 @@ export const TodoCard: FC<Props> = ({ todo, onUpdate, onRemove }) => {
                 <Grid item>
                   <Tooltip
                     title={
-                      completed ? "Todo is completed" : "Mark todo as completed"
+                      isCompleting
+                        ? "Marking todo as completed..."
+                        : completed
+                        ? "Todo is completed"
+                        : "Mark todo as completed"
                     }>
                     <div>
                       <IconButton
-                        disabled={completed}
-                        onClick={() =>
-                          updateTodo({ ...todo, completed: true })
-                        }>
-                        <CheckIcon color={completed ? "success" : "inherit"} />
+                        disabled={completed || isCompleting}
+                        onClick={async () => {
+                          setIsCompleting(true);
+                          await updateTodo({ ...todo, completed: true });
+                          setIsCompleting(false);
+                        }}>
+                        {isCompleting ? (
+                          <CircularProgress size={"1.5rem"} color={"success"} />
+                        ) : (
+                          <CheckIcon
+                            color={completed ? "success" : "inherit"}
+                          />
+                        )}
                       </IconButton>
                     </div>
                   </Tooltip>
@@ -92,10 +113,23 @@ export const TodoCard: FC<Props> = ({ todo, onUpdate, onRemove }) => {
                 )}
               </Grid>
               <Grid item>
-                <Tooltip title={"Remove todo"}>
-                  <IconButton onClick={async () => await removeTodo(todo)}>
-                    <CloseIcon />
-                  </IconButton>
+                <Tooltip
+                  title={!isRemoving ? "Remove todo" : "Removing todo..."}>
+                  <div>
+                    <IconButton
+                      disabled={isRemoving}
+                      onClick={async () => {
+                        setIsRemoving(true);
+                        await removeTodo(todo);
+                        setTimeout(() => setIsRemoving(false), 5000);
+                      }}>
+                      {isRemoving ? (
+                        <CircularProgress size={"1.5rem"} color={"error"} />
+                      ) : (
+                        <CloseIcon />
+                      )}
+                    </IconButton>
+                  </div>
                 </Tooltip>
               </Grid>
             </Grid>
@@ -121,7 +155,6 @@ export const TodoCard: FC<Props> = ({ todo, onUpdate, onRemove }) => {
                   year: "numeric",
                   hour: "numeric",
                   minute: "numeric",
-                  second: "numeric",
                 })}
               </Typography>
             </Grid>

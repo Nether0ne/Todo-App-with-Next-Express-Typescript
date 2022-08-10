@@ -7,9 +7,10 @@ const todoList = async (client: Axios): Promise<Todo[]> => {
     return todos as Todo[];
   } catch (e: unknown) {
     if (e instanceof AxiosError) {
-      const response = e.response?.statusText;
-      if (response) {
-        throw new Error(response);
+      const { error } = e.response?.data;
+      
+      if (error) {
+        throw new Error(error);
       } else {
         throw new Error("Unknown error has appeared");
       }

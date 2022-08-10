@@ -8,9 +8,10 @@ const deleteTodo = async (todoToDelete: Todo): Promise<void> => {
     await client.delete("/api/todo", { data: { todo: todoToDelete } });
   } catch (e: unknown) {
     if (e instanceof AxiosError) {
-      const response = e.response?.statusText;
-      if (response) {
-        if (response === "TODO_NOT_FOUND") {
+      const { error } = e.response?.data;
+
+      if (error) {
+        if (error === "TODO_NOT_FOUND") {
           throw new Error("Todo not found");
         } else {
           throw new Error("Something went wrong");

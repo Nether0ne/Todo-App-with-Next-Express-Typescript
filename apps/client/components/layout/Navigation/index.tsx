@@ -50,15 +50,12 @@ export const Navigation: FC = () => {
   const pages = ["Home"];
   const settings = [
     {
-      icon: <PersonIcon />,
-      name: "Profile",
-      onClick: () => router.push("/profile"),
-      divider: false,
-    },
-    {
       icon: theme === Theme.LIGHT ? <Brightness4Icon /> : <Brightness6Icon />,
       name: "Theme",
-      onClick: () => toggleTheme(),
+      onClick: () => {
+        toggleTheme();
+        handleCloseUserMenu();
+      },
       divider: true,
     },
     {
@@ -67,6 +64,7 @@ export const Navigation: FC = () => {
       onClick: () => {
         setAuthCookies("");
         router.push("/auth");
+        handleCloseUserMenu();
       },
       divider: false,
     },

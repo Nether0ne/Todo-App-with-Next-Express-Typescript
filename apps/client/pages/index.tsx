@@ -65,12 +65,10 @@ const Home: NextPage<Props> = ({ todos }) => {
           flexWrap={"wrap"}
           justifyContent={{
             xs: "center",
-            sm: "space-around",
-            md: "space-between",
-            lg: "space-evenly",
+            sm: "space-between",
           }}
           alignItems={"flex-start"}
-          alignSelf={"center"}
+          alignSelf={"flex-start"}
           gap={{ xs: 2, sm: 3, md: 4, lg: 5 }}
           px={2}
           pt={4}>

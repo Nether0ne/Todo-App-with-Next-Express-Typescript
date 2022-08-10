@@ -31,6 +31,7 @@ export const EditTodoForm: FC<Props> = ({ todo, onSend, onCancel }) => {
       component="form"
       onSubmit={handleSubmit(onSubmit)}
       sx={{
+        width: "100%",
         display: "flex",
         flexDirection: "column",
         gap: 2,
@@ -55,6 +56,8 @@ export const EditTodoForm: FC<Props> = ({ todo, onSend, onCancel }) => {
         )}
         rules={{
           required: "Task description is required",
+          validate: (value) =>
+            value.trim().length > 0 || "Task description cannot be empty",
         }}
       />
       <Controller
