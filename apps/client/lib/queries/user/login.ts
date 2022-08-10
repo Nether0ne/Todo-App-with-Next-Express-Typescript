@@ -8,12 +8,12 @@ const login = async (userData: UserLogin): Promise<LoggedInUser> => {
     return user as LoggedInUser;
   } catch (e: unknown) {
     if (e instanceof AxiosError) {
-      const response = e.response?.statusText;
-      if (response) {
-        if (response === "INVALID_CREDENTIALS") {
+      const { error } = e.response?.data;
+      if (error) {
+        if (error === "INVALID_CREDENTIALS") {
           throw new Error("Invalid email or password");
         } else {
-          throw new Error(response);
+          throw new Error(error);
         }
       } else {
         throw new Error("Unknown error has appeared");
