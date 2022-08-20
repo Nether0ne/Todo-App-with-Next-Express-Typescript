@@ -37,6 +37,7 @@ This project can be run either in Node environment or as Docker images.
 ### Running in Node environment
 
 Running in Node environment requires running Postgre service.
+
 Navigate into the project directory and run next commands in a command line:
 
 ```bash
@@ -64,6 +65,7 @@ npm run dev
 ### Running as Docker images
 
 Running as Docker images requires running Docker service.
+
 Navigate into the project directory and run next commands in a command line:
 
 ```bash
@@ -78,10 +80,11 @@ docker-compose up
 
 ### Application
 
-Client: http://localhost:3000
-Server: http://localhost:5000
+After starting the application in Node/Docker environment it must be available at the following urls:
+- Client: http://localhost:3000
+- Server: http://localhost:5000
 
-Test account has the following credentials:
+If the setup was done right, you should be able to access the application with the following credentials:
 
 - Email: test@email.com
 - Password: test
