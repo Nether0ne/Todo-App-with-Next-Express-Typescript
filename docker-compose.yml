@@ -1,0 +1,65 @@
+version: "3.8"
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=test
+    ports:
+      - 5432:5432
+    volumes:
+      - db:/var/lib/postgresql/data
+
+  prisma-migration:
+    container_name: prisma-migration
+    image: prisma-migration
+    build:
+      context: ./apps/server/prisma
+      dockerfile: Dockerfile
+    env_file:
+      - ./apps/server/prisma/.env
+    depends_on:
+      - postgres
+    network_mode: "host"
+
+  server:
+    container_name: server
+    image: todo-server
+    depends_on:
+      - postgres
+    build:
+      context: ./apps/server
+      dockerfile: Dockerfile
+    env_file:
+      - ./apps/server/.env
+    restart: always
+    volumes:
+      - ./apps/server/:/usr/apps/server
+      - ./node_modules:/usr/apps/server/node_modules
+    ports:
+      - 5000:5000
+    links:
+      - postgres
+
+  client:
+    container_name: client
+    image: todo-client
+    build:
+      context: ./apps/client
+      dockerfile: Dockerfile
+    env_file:
+      - ./apps/client/.env
+    restart: always
+    volumes:
+      - ./apps/client/:/usr/apps/client
+      - ./node_modules:/usr/apps/client/node_modules
+    ports:
+      - 3000:3000
+    links:
+      - server
+
+volumes:
+  db:
+    driver: local

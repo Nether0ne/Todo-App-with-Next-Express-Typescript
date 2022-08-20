@@ -1,6 +1,6 @@
 import { Todo, TodoEdit } from "@customTypes/Todo";
 import { AxiosError } from "axios";
-import initAxios from "../client";
+import initAxios from "@queries/client";
 
 const editTodo = async (todoToEdit: TodoEdit): Promise<Todo> => {
   try {
@@ -11,14 +11,14 @@ const editTodo = async (todoToEdit: TodoEdit): Promise<Todo> => {
     return todo as Todo;
   } catch (e: unknown) {
     if (e instanceof AxiosError) {
-      const response = e.response?.statusText;
+      const { error } = e.response?.data;
 
-      if (response) {
-        if (response === "TODO_NOT_FOUND") {
+      if (error) {
+        if (error === "TODO_NOT_FOUND") {
           throw new Error("Todo not found");
-        } else if (response === "DESCRIPTION_REQUIRED") {
+        } else if (error === "DESCRIPTION_REQUIRED") {
           throw new Error("Description is required");
-        } else if (response === "COLOR_REQUIRED") {
+        } else if (error === "COLOR_REQUIRED") {
           throw new Error("Color is required");
         } else {
           throw new Error("Something went wrong");

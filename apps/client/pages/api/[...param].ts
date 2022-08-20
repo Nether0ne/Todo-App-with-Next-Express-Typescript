@@ -21,17 +21,21 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(response.status).json(response.data);
   } catch (e: unknown) {
     if (e instanceof AxiosError) {
-      const { error, status } = e.response?.data;
+      if (e.response) {
+        const { error } = e.response?.data;
+        const statusCode = Number(e.request.res.statusCode) || 500;
 
-      if (error) {
-        res.statusMessage = error;
-        if (error === "UNAUTHORIZED") {
-          res.status(401).json({ message: error, status });
+        if (error) {
+          res.status(statusCode).json({ error, statusCode });
         } else {
-          res.status(Number(status)).json({ message: error, status });
+          res
+            .status(statusCode)
+            .json({ error: "Internal Server Error", statusCode });
         }
       } else {
-        res.status(500).json({ message: "Internal Server Error", status });
+        res
+          .status(500)
+          .json({ error: "Internal Server Error", statusCode: 500 });
       }
     }
   }
