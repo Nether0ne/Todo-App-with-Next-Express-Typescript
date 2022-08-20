@@ -34,12 +34,10 @@ app.use(
     res: Response,
     _next: NextFunction
   ) => {
-    if (err instanceof HttpException) {
-      if (err && err.name === "UnauthorizedError") {
-        return res.status(401).json({ error: "UNAUTHORIZED" });
-      } else {
-        res.status(err.errorCode).json({ error: err.message });
-      }
+    if (err && err.name === "UnauthorizedError") {
+      return res.status(401).json({ error: "UNAUTHORIZED" });
+    } else if (err instanceof HttpException) {
+      res.status(err.errorCode).json({ error: err.message });
     } else {
       res.status(500).json({ error: err.message });
     }
