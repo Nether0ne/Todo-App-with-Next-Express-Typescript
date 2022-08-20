@@ -1,6 +1,6 @@
 import axios, { Axios } from "axios";
 import { IncomingMessage } from "http";
-import { getAuthCookies } from "../helpers/cookies/getAuthCookies";
+import { getAuthCookies } from "@helpers/cookies/getAuthCookies";
 
 const initAxios = (req?: IncomingMessage): Axios => {
   let auth = null;

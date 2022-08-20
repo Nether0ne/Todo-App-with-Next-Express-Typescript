@@ -32,16 +32,18 @@ app.use(
     err: Error | HttpException,
     _req: Request,
     res: Response,
-    _next: NextFunction,
+    _next: NextFunction
   ) => {
-    if (err && err.name === "UnauthorizedError") {
-      return res.status(401).json({ error: "UNAUTHORIZED" });
-    } else if (err && "errorCode" in err) {
-      res.status(err.errorCode).json({ error: err.message });
-    } else if (err) {
+    if (err instanceof HttpException) {
+      if (err && err.name === "UnauthorizedError") {
+        return res.status(401).json({ error: "UNAUTHORIZED" });
+      } else {
+        res.status(err.errorCode).json({ error: err.message });
+      }
+    } else {
       res.status(500).json({ error: err.message });
     }
-  },
+  }
 );
 
 export default app.listen(port);

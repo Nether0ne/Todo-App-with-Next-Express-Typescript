@@ -1,0 +1,11 @@
+# dependencies
+node_modules
+
+# build
+dist
+
+# turbo logs
+.turbo
+
+# tests
+coverage

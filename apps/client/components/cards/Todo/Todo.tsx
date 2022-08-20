@@ -1,6 +1,7 @@
 import { Todo, TodoEdit } from "@customTypes/Todo";
 import {
   CircularProgress,
+  darken,
   Grid,
   IconButton,
   Tooltip,
@@ -11,7 +12,6 @@ import { TodoWrapper } from "@components/cards/Todo/Wrapper";
 import CheckIcon from "@mui/icons-material/Check";
 import EditIcon from "@mui/icons-material/Edit";
 import CloseIcon from "@mui/icons-material/Close";
-import { AddTodoForm } from "@/components/forms/todo/Add";
 import editTodo from "@queries/todo/edit";
 import { useSnackbar } from "notistack";
 import deleteTodo from "@queries/todo/delete";
@@ -66,13 +66,15 @@ export const TodoCard: FC<Props> = ({ todo, onUpdate, onRemove }) => {
             flexWrap={"nowrap"}
             flexShrink={1}
             justifyContent={"space-between"}
-            pr={1}>
+            pr={1}
+          >
             <Grid
               item
               display={"flex"}
               flexWrap="nowrap"
               justifyContent={"space-around"}
-              pt={0.5}>
+              pt={0.5}
+            >
               <Grid container spacing={0.5}>
                 <Grid item>
                   <Tooltip
@@ -82,7 +84,8 @@ export const TodoCard: FC<Props> = ({ todo, onUpdate, onRemove }) => {
                         : completed
                         ? "Todo is completed"
                         : "Mark todo as completed"
-                    }>
+                    }
+                  >
                     <div>
                       <IconButton
                         disabled={completed || isCompleting}
@@ -90,7 +93,8 @@ export const TodoCard: FC<Props> = ({ todo, onUpdate, onRemove }) => {
                           setIsCompleting(true);
                           await updateTodo({ ...todo, completed: true });
                           setIsCompleting(false);
-                        }}>
+                        }}
+                      >
                         {isCompleting ? (
                           <CircularProgress size={"1.5rem"} color={"success"} />
                         ) : (
@@ -114,7 +118,8 @@ export const TodoCard: FC<Props> = ({ todo, onUpdate, onRemove }) => {
               </Grid>
               <Grid item>
                 <Tooltip
-                  title={!isRemoving ? "Remove todo" : "Removing todo..."}>
+                  title={!isRemoving ? "Remove todo" : "Removing todo..."}
+                >
                   <div>
                     <IconButton
                       disabled={isRemoving}
@@ -122,7 +127,8 @@ export const TodoCard: FC<Props> = ({ todo, onUpdate, onRemove }) => {
                         setIsRemoving(true);
                         await removeTodo(todo);
                         setTimeout(() => setIsRemoving(false), 5000);
-                      }}>
+                      }}
+                    >
                       {isRemoving ? (
                         <CircularProgress size={"1.5rem"} color={"error"} />
                       ) : (
@@ -143,12 +149,22 @@ export const TodoCard: FC<Props> = ({ todo, onUpdate, onRemove }) => {
                   maxHeight: 150,
                   overflowY: "auto",
                   overflowWrap: "anywhere",
-                }}>
+
+                  scrollbarColor: `${color} background`,
+                  "::-webkit-scrollbar-thumb": {
+                    background: color,
+                    borderRadius: 5,
+                  },
+                  "::-webkit-scrollbar-thumb:hover": {
+                    background: darken(color, 0.25),
+                  },
+                }}
+              >
                 {description}
               </Typography>
             </Grid>
             <Grid item textAlign={"right"}>
-              <Typography variant="body2">
+              <Typography component="span" variant="body2">
                 {new Date(createdAt).toLocaleTimeString("en-US", {
                   day: "numeric",
                   month: "short",

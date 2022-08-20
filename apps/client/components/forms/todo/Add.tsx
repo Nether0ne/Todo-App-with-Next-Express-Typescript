@@ -40,7 +40,8 @@ export const AddTodoForm: FC<Props> = ({ onSend, onCancel }) => {
         flexDirection: "column",
         gap: 2,
         p: 2,
-      }}>
+      }}
+    >
       <Controller
         name="description"
         control={control}
@@ -60,6 +61,10 @@ export const AddTodoForm: FC<Props> = ({ onSend, onCancel }) => {
         )}
         rules={{
           required: "Task description is required",
+          maxLength: {
+            value: 255,
+            message: "Task description is too long",
+          },
           validate: (value) =>
             value.trim().length > 0 || "Task description cannot be empty",
         }}
@@ -89,7 +94,8 @@ export const AddTodoForm: FC<Props> = ({ onSend, onCancel }) => {
           type="submit"
           loading={isSubmitting}
           disabled={!isValid}
-          variant="contained">
+          variant="contained"
+        >
           Create
         </LoadingButton>
         <Button variant="contained" color="error" onClick={onCancel}>

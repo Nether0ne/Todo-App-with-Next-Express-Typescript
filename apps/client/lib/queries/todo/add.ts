@@ -1,6 +1,6 @@
 import { Todo, TodoAdd } from "@customTypes/Todo";
 import { AxiosError } from "axios";
-import initAxios from "../client";
+import initAxios from "@queries/client";
 
 const addTodo = async (todoToAdd: TodoAdd): Promise<Todo> => {
   try {

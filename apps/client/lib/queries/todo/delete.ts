@@ -1,6 +1,6 @@
 import { Todo } from "@customTypes/Todo";
 import { AxiosError } from "axios";
-import initAxios from "../client";
+import initAxios from "@queries/client";
 
 const deleteTodo = async (todoToDelete: Todo): Promise<void> => {
   try {

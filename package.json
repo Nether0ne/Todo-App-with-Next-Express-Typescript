@@ -22,6 +22,11 @@
   "dependencies": {
     "turbo": "^1.1.5"
   },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "prettier --write"
+    ]
+  },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
   }
